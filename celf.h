@@ -19,9 +19,9 @@ public:
 	Canvas(int width, int height);
 	errorno fill(int color);
 	errorno drawRect(int wid,int len, int x, int y, int color);
-	errorno drawSolidRect(int wid,int len, int x, int y, int color);
-	errorno drawCircle(int radius,int thickness, int x, int y, int color);
-	errorno drawSolidCircle(int radius, int x, int y, int color);
+	errorno drawEmptyCircle(int radius,int thickness, int x, int y, int color);
+	errorno drawCircle(int radius, int x, int y, int color);
+	errorno drawLine(int x1, int y1, int x2, int y2, int thickness, int color);
 	errorno saveToPPM(std::string name);
 	~Canvas();
 

@@ -10,8 +10,7 @@ int main (void){
 
 	canvas.fill(0xFF1817AE);
 	canvas.drawRect( width/2, height/2, width/2, height/2, 0xFFAFAFAF);
-	canvas.drawCircle( height/4, 100, width/2, height/2, 0xFF00FAFA);
-	canvas.drawSolidCircle( height/4, width/4, height/4, 0xFFEE15AA);
+	canvas.drawLine(width/2, height/2, width/4, height/4, 5, 0xFF000000);
 	canvas.saveToPPM("sample.ppm");
 
 }

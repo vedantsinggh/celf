@@ -23,11 +23,51 @@ errorno Canvas::fill(int color){
 	return OK;
 }
 
-errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
+errorno Canvas::drawLine(int x1, int y1, int x2, int y2, int thickness, int color){
+	int x_min, x_max, y_min, y_max;
+	{
+		if (x1 < x2){
+			x_min = x1;	
+			x_max = x2;
+			y_min = y1;	
+			y_max = y2;
+		}else{
+			x_min = x2;	
+			x_max = x1;
+			y_min = y2;	
+			y_max = y1;
+		}
+	}
+
+	if ((x_max - x_min) == 0){
+		for (int iy = y_min; iy <= y_max; iy++){
+			pixels[iy*width + x_min] = color;
+		}
+	}
+
+	float m0 = (y_max - y_min)/(float)(x_max - x_min);
+
+	for (int iy = y_min; iy <= y_max; iy++){
+		for (int ix = x_min; ix <= x_max; ix++){
+			if ((ix - x_min) == 0) continue;
+			float m = (iy - y_min)/(float)(ix - x_min);
+			if (m == m0){
+				pixels[iy*width + ix] = color;
+				for (int t = 1; t < thickness; t++){
+					if( iy - t/2 > y_min && iy + t/2 < y_max &&  ix - t/2 > x_min && ix + t/2 < x_max ){
+						pixels[(iy - t)*width + ix] = color;
+						pixels[(iy + t)*width + ix] = color;
+						pixels[iy*width + ix + t] = color;
+						pixels[iy*width + ix - t] = color;
+					}
+				}
+			}
+		}
+	}
 	return OK;
 }
 
-errorno Canvas::drawSolidRect( int wid, int len, int x, int y, int color){
+errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
 	
 	for (int iy = y; iy < len + y; iy++){
 		if (iy > 0 && iy < height){
@@ -42,7 +82,7 @@ errorno Canvas::drawSolidRect( int wid, int len, int x, int y, int color){
 	return OK;
 }
 
-errorno Canvas::drawCircle(int radius,int thickness, int x, int y, int color){
+errorno Canvas::drawEmptyCircle(int radius,int thickness, int x, int y, int color){
 	
 	for (int iy = y - radius - thickness; iy <= y + radius + thickness; iy++){
 		if (iy > 0 && iy < height){
@@ -60,7 +100,7 @@ errorno Canvas::drawCircle(int radius,int thickness, int x, int y, int color){
 	return OK;
 }
 
-errorno Canvas::drawSolidCircle(int radius,int x, int y, int color){
+errorno Canvas::drawCircle(int radius,int x, int y, int color){
 	
 	for (int iy = y - radius; iy <= y + radius; iy++){
 		if (iy > 0 && iy < height){
