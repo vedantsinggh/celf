@@ -1,9 +1,8 @@
 #pragma once 
 
 #include <string>
-#include <fstream>
 
-#define DEFAULT_SIZE 800
+#define DEFAULT_SIZE 400
 
 enum errorno {
 	FATAL = -1,
@@ -11,15 +10,19 @@ enum errorno {
 };
 
 class Canvas {
+
 public:
 	int height;
 	int  width;
-	int* pixels;
 public:
 	Canvas();
-	Canvas(int h, int w);
+	Canvas(int width, int height);
 	errorno fill(int color);
-	errorno drawRect(int length,int width, int x, int y, int color);
+	errorno drawRect(int wid,int len, int x, int y, int color);
+	errorno drawCircle(int radius, int x, int y, int color);
 	errorno saveToPPM(std::string name);
 	~Canvas();
+
+private:
+	int* pixels;
 };

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cmath>
 
 #include "celf.h"
 
@@ -9,7 +10,7 @@ Canvas::Canvas(){
 	pixels = new int[height*width];
 }
 
-Canvas::Canvas(int h, int w){
+Canvas::Canvas(int w, int h){
 	height = h;
 	width  = w;
 	pixels = new int[height*width];
@@ -19,18 +20,41 @@ errorno Canvas::fill(int color){
 	for (int i = 0; i < height*width; i++){
 		(pixels[i]) = color;
 	}
+
 	return OK;
 }
 
-errorno Canvas::drawRect(int l, int w, int x, int y, int color){
+errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
 	
-	for (int iy = y; iy < l + y; iy++){
-		for (int ix = x; ix < w + x; ix++){
-			pixels[iy*width + ix] = color;
+	for (int iy = y; iy < len + y; iy++){
+		if (iy > 0 && iy < height){
+			for (int ix = x; ix < wid + x; ix++){
+				if (ix > 0 && ix < width){
+					pixels[iy*width + ix] = color;
+				}
+			}
 		}
 	}
-	return OK;
 
+	return OK;
+}
+
+errorno Canvas::drawCircle(int radius, int x, int y, int color){
+	
+	for (int iy = y - radius; iy <= y + radius; iy++){
+		if (iy > 0 && iy < height){
+			for (int ix = x - radius; ix <= x + radius; ix++){
+				if (ix > 0 && ix < width){
+					int distance = sqrt((x - ix)*(x - ix) + (y - iy)*(y - iy));		
+					if (distance <= radius){
+						pixels[iy*width + ix] = color;
+					}
+				}
+			}
+		}
+	}
+
+	return OK;
 }
 
 errorno Canvas::saveToPPM(std::string name){
@@ -61,3 +85,4 @@ errorno Canvas::saveToPPM(std::string name){
 Canvas::~Canvas(){
 	delete[] pixels;
 }
+
