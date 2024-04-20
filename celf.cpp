@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <fstream>
 #include <cmath>
@@ -25,6 +24,10 @@ errorno Canvas::fill(int color){
 }
 
 errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
+	return OK;
+}
+
+errorno Canvas::drawSolidRect( int wid, int len, int x, int y, int color){
 	
 	for (int iy = y; iy < len + y; iy++){
 		if (iy > 0 && iy < height){
@@ -39,14 +42,14 @@ errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
 	return OK;
 }
 
-errorno Canvas::drawCircle(int radius, int x, int y, int color){
+errorno Canvas::drawCircle(int radius,int thickness, int x, int y, int color){
 	
-	for (int iy = y - radius; iy <= y + radius; iy++){
+	for (int iy = y - radius - thickness; iy <= y + radius + thickness; iy++){
 		if (iy > 0 && iy < height){
-			for (int ix = x - radius; ix <= x + radius; ix++){
+			for (int ix = x - radius - thickness; ix <= x + radius + thickness; ix++){
 				if (ix > 0 && ix < width){
 					int distance = sqrt((x - ix)*(x - ix) + (y - iy)*(y - iy));		
-					if (distance <= radius){
+					if (abs(distance - radius) <= thickness/2){
 						pixels[iy*width + ix] = color;
 					}
 				}
@@ -57,6 +60,23 @@ errorno Canvas::drawCircle(int radius, int x, int y, int color){
 	return OK;
 }
 
+errorno Canvas::drawSolidCircle(int radius,int x, int y, int color){
+	
+	for (int iy = y - radius; iy <= y + radius; iy++){
+		if (iy > 0 && iy < height){
+			for (int ix = x - radius; ix <= x + radius; ix++){
+				if (ix > 0 && ix < width){
+					int distance = sqrt((x - ix)*(x - ix) + (y - iy)*(y - iy));		
+					if (distance < radius){
+						pixels[iy*width + ix] = color;
+					}
+				}
+			}
+		}
+	}
+
+	return OK;
+}
 errorno Canvas::saveToPPM(std::string name){
 
 	std::fstream file;
