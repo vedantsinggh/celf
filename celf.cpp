@@ -22,6 +22,17 @@ errorno Canvas::fill(int color){
 	return OK;
 }
 
+errorno Canvas::drawRect(int l, int w, int x, int y, int color){
+	
+	for (int iy = y; iy < l + y; iy++){
+		for (int ix = x; ix < w + x; ix++){
+			pixels[iy*width + ix] = color;
+		}
+	}
+	return OK;
+
+}
+
 errorno Canvas::saveToPPM(std::string name){
 
 	std::fstream file;

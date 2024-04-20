@@ -19,6 +19,7 @@ public:
 	Canvas();
 	Canvas(int h, int w);
 	errorno fill(int color);
+	errorno drawRect(int length,int width, int x, int y, int color);
 	errorno saveToPPM(std::string name);
 	~Canvas();
 };
