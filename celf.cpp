@@ -31,12 +31,12 @@ errorno Canvas::saveToPPM(std::string name){
 
 	file << "P3 " << width << " " << height << " " << 255 << "\n";
 
-	for (int x = 0; x < width; ++x){
-		for (int y = 0; y < height; ++y){
+	for (int y = 0; y < height; ++y){
+		for (int x = 0; x < width; ++x){
 			int bytes[3] = {
-				(*pixels>>(8*2))&0xFF,
-				(*pixels>>(8*1))&0xFF,
-				(*pixels>>(8*0))&0xFF,
+				(pixels[y*width + x]>>(8*2))&0xFF,
+				(pixels[y*width + x]>>(8*1))&0xFF,
+				(pixels[y*width + x]>>(8*0))&0xFF,
 			};
 			file << bytes[0] << " " << bytes[1] << " " << bytes[2] << " ";
 		}
