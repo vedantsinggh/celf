@@ -6,11 +6,13 @@ int main (void){
 
 	int height = 400;
 	int width  = 400;
+	int lineThickness = 10;
 	Canvas canvas( width, height);
 
 	canvas.fill(0xFF1817AE);
 	canvas.drawRect( width/2, height/2, width/2, height/2, 0xFFAFAFAF);
-	canvas.drawLine(width/2, height/2, width/4, height/4, 5, 0xFF000000);
+	canvas.drawEmptyCircle(width/2,lineThickness, width/2, height/2, 0xFF181818);
+	canvas.drawLine(width/2, height/2, width/4, height/4, lineThickness, 0xFF000000);
 	canvas.saveToPPM("sample.ppm");
 
 }

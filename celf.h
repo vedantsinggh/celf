@@ -30,9 +30,9 @@ private:
 };
 
 
-// TODO: drawLine
-// TODO: drawRect
 // TODO: drawTriangle
+// TODO: implement gradientcolors
 // TODO: drawArc
 // TODO: drawSolidArc
+// TODO: Benchmarking
 

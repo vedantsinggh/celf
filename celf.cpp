@@ -54,7 +54,8 @@ errorno Canvas::drawLine(int x1, int y1, int x2, int y2, int thickness, int colo
 			if (m == m0){
 				pixels[iy*width + ix] = color;
 				for (int t = 1; t < thickness; t++){
-					if( iy - t/2 > y_min && iy + t/2 < y_max &&  ix - t/2 > x_min && ix + t/2 < x_max ){
+					bool isInBound = iy - t/2 > y_min && iy + t/2 < y_max &&  ix - t/2 > x_min && ix + t/2 < x_max;
+						if(isInBound){
 						pixels[(iy - t)*width + ix] = color;
 						pixels[(iy + t)*width + ix] = color;
 						pixels[iy*width + ix + t] = color;
@@ -70,9 +71,9 @@ errorno Canvas::drawLine(int x1, int y1, int x2, int y2, int thickness, int colo
 errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
 	
 	for (int iy = y; iy < len + y; iy++){
-		if (iy > 0 && iy < height){
+		if (iy >= 0 && iy <= height){
 			for (int ix = x; ix < wid + x; ix++){
-				if (ix > 0 && ix < width){
+				if (ix >= 0 && ix <= width){
 					pixels[iy*width + ix] = color;
 				}
 			}
@@ -85,9 +86,9 @@ errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
 errorno Canvas::drawEmptyCircle(int radius,int thickness, int x, int y, int color){
 	
 	for (int iy = y - radius - thickness; iy <= y + radius + thickness; iy++){
-		if (iy > 0 && iy < height){
+		if (iy >= 0 && iy <= height){
 			for (int ix = x - radius - thickness; ix <= x + radius + thickness; ix++){
-				if (ix > 0 && ix < width){
+				if (ix >= 0 && ix <= width){
 					int distance = sqrt((x - ix)*(x - ix) + (y - iy)*(y - iy));		
 					if (abs(distance - radius) <= thickness/2){
 						pixels[iy*width + ix] = color;
@@ -103,9 +104,9 @@ errorno Canvas::drawEmptyCircle(int radius,int thickness, int x, int y, int colo
 errorno Canvas::drawCircle(int radius,int x, int y, int color){
 	
 	for (int iy = y - radius; iy <= y + radius; iy++){
-		if (iy > 0 && iy < height){
+		if (iy >= 0 && iy <= height){
 			for (int ix = x - radius; ix <= x + radius; ix++){
-				if (ix > 0 && ix < width){
+				if (ix >= 0 && ix <= width){
 					int distance = sqrt((x - ix)*(x - ix) + (y - iy)*(y - iy));		
 					if (distance < radius){
 						pixels[iy*width + ix] = color;
@@ -117,6 +118,7 @@ errorno Canvas::drawCircle(int radius,int x, int y, int color){
 
 	return OK;
 }
+
 errorno Canvas::saveToPPM(std::string name){
 
 	std::fstream file;
