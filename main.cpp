@@ -9,10 +9,11 @@ int main (void){
 	int lineThickness = 10;
 	Canvas canvas( width, height);
 
-	canvas.fill(0xFF1817AE);
-	canvas.drawRect( width/2, height/2, width/2, height/2, 0xFFAFAFAF);
-	canvas.drawEmptyCircle(width/2,lineThickness, width/2, height/2, 0xFF181818);
-	canvas.drawLine(width/2, height/2, width/4, height/4, lineThickness, 0xFF000000);
+	canvas.fill(0xFF181818);
+	canvas.drawLine( width/4, height/4, 3*width/4,3*height/4, lineThickness, 0xFFFFFFFF);
+	canvas.drawLine( width/4, 3*height/4, 3*width/4,height/4, lineThickness, 0xFFFFFFFF);
+	canvas.drawLine( width/2, height/2, width/2,height/4, lineThickness, 0xFFFFFFFF);
+	canvas.drawEmptyCircle(200, lineThickness, 0,0, 0xFFFFFFFF);
 	canvas.saveToPPM("sample.ppm");
 
 }
