@@ -31,6 +31,7 @@ private:
 
 
 // TODO: drawTriangle
+// TODO: subcanvasing
 // TODO: implement gradientcolors
 // TODO: drawArc
 // TODO: drawSolidArc

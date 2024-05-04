@@ -23,49 +23,43 @@ errorno Canvas::fill(int color){
 	return OK;
 }
 
+//TODO: rewrite this function
 errorno Canvas::drawLine(int x1, int y1, int x2, int y2, int thickness, int color){
-	int x_min, x_max, y_min, y_max;
-	{
-		if (x1 < x2){
-			x_min = x1;	
-			x_max = x2;
-			y_min = y1;	
-			y_max = y2;
-		}else{
-			x_min = x2;	
-			x_max = x1;
-			y_min = y2;	
-			y_max = y1;
-		}
-	}
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
 
-	if ((x_max - x_min) == 0){
-		for (int iy = y_min; iy <= y_max; iy++){
-			pixels[iy*width + x_min] = color;
-		}
-	}
+    int sx = x1 < x2 ? 1 : -1;
+    int sy = y1 < y2 ? 1 : -1;
 
-	float m0 = (y_max - y_min)/(float)(x_max - x_min);
+    int err = dx - dy;
 
-	for (int iy = y_min; iy <= y_max; iy++){
-		for (int ix = x_min; ix <= x_max; ix++){
-			if ((ix - x_min) == 0) continue;
-			float m = (iy - y_min)/(float)(ix - x_min);
-			if (m == m0){
-				pixels[iy*width + ix] = color;
-				for (int t = 1; t < thickness; t++){
-					bool isInBound = iy - t/2 > y_min && iy + t/2 < y_max &&  ix - t/2 > x_min && ix + t/2 < x_max;
-						if(isInBound){
-						pixels[(iy - t)*width + ix] = color;
-						pixels[(iy + t)*width + ix] = color;
-						pixels[iy*width + ix + t] = color;
-						pixels[iy*width + ix - t] = color;
-					}
-				}
-			}
-		}
-	}
-	return OK;
+    int x = x1, y = y1;
+
+    int halfThickness = thickness / 3;
+
+    while (true) {
+        for (int i = -halfThickness; i <= halfThickness; i++) {
+            for (int j = -halfThickness; j <= halfThickness; j++) {
+                if (x + i >= 0 && x + i < width && y + j >= 0 && y + j < height) {
+                    pixels[(y + j) * width + (x + i)] = color;
+                }
+            }
+        }
+
+        if (x == x2 && y == y2) break;
+
+        int err2 = 2 * err;
+        if (err2 > -dy) {
+            err -= dy;
+            x += sx;
+        }
+        if (err2 < dx) {
+            err += dx;
+            y += sy;
+        }
+    }
+
+    return OK;
 }
 
 errorno Canvas::drawRect( int wid, int len, int x, int y, int color){
